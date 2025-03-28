@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import Providers from "@/components/providers";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { ReactScan } from "@/components/ReactScanComponent";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +28,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-locator-target="vscode"
+      data-locator-mouse-modifiers=""
+    >
+      <ReactScan />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>
+          <NuqsAdapter>
+            <Suspense>{children}</Suspense>
+          </NuqsAdapter>
+        </Providers>
+        <TailwindIndicator />
       </body>
     </html>
   );
